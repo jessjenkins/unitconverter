@@ -26,7 +26,7 @@ func hello(w http.ResponseWriter, r *http.Request) {
 
 func loadConverters(filename string) []converter {
 	//TODO validate filename
-	converters := make([]converter, 3)
+	var converters []converter
 
 	jsonData, err := ioutil.ReadFile(filename)
 	if err != nil {
