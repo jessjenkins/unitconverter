@@ -27,7 +27,7 @@ func hello(w http.ResponseWriter, r *http.Request) {
 
 func loadConverters(filename string) []converter {
 	//TODO validate filename
-	converters := make([]converter, 3)
+	converters := make([]converter, 0)
 
 	file, err := os.Open(filename) // For read access.
 	if err != nil {
