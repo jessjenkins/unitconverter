@@ -3,10 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 )
 
 var converters []converter
@@ -29,29 +28,11 @@ func loadConverters(filename string) []converter {
 	//TODO validate filename
 	converters := make([]converter, 3)
 
-	file, err := os.Open(filename) // For read access.
+	jsonData, err := ioutil.ReadFile(filename)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer file.Close()
+	json.Unmarshal(jsonData, &converters)
 
-	dec := json.NewDecoder(file)
-
-	// read open bracket
-	_, err = dec.Token()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	for dec.More() {
-		var cv converter
-		if err := dec.Decode(&cv); err == io.EOF {
-			break
-		} else if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Printf("%s: %v\n", cv.Name, cv.Unit)
-		converters = append(converters, cv)
-	}
 	return converters
 }
